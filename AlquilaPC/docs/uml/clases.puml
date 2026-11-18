@@ -1,0 +1,33 @@
+@startuml clases
+class proyecto1 <<module>> {
+  + VALOR_DIA = 35000
+  + EQUIPOS_MINIMOS = 2
+  + TIPOS_SERVICIO : dict
+  --
+  + validar_datos(nombre, equipos, dias_ini, dias_adic, tipo) : list
+  + calcular_valores(nombre, equipos, dias_ini, dias_adic, tipo) : dict
+  + calculo_alquiler(equipos, dias_ini) : int
+  + calculo_alquiler_adicional(equipos, dias_adic) : int
+  + calculo_descuento(valor_alq, valor_adic, tipo) : dict
+  + calculo_alquiler_adicional_dto(valor_adic) : int
+  + calculo_dentro_establecimiento(subtotal, tipo) : int
+  + calculo_domicilio(valor_neto, tipo) : int
+  + generar_factura(liq) : str
+  + formato_moneda(valor) : str
+}
+class ValidacionError {
+  + errores : list
+}
+class app <<Flask>> {
+  + SERVICIOS : dict  (memoria)
+  --
+  + index() GET /
+  + liquidar() POST /liquidar
+  + listar_servicios() GET /servicios
+  + ver_servicio(id) GET /servicios/<id>
+  + api_servicio(id) GET /api/servicios/<id>
+}
+ValueError <|-- ValidacionError
+proyecto1 ..> ValidacionError : lanza
+app ..> proyecto1 : usa
+@enduml

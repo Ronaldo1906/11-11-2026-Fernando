@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block titulo %}Recibo #{{ s.id }} - ALQUILAPC{% endblock %}
+{% block contenido %}
+<h1>Recibo #{{ s.id }}</h1>
+<table>
+  <tr><th>Cliente</th><td>{{ s.nombre }}</td></tr>
+  <tr><th>Opción de alquiler</th><td>{{ s.tipo_servicio_nombre }}</td></tr>
+  <tr><th>Equipos alquilados</th><td>{{ s.equipos }}</td></tr>
+  <tr><th>Días iniciales</th><td>{{ s.dias_iniciales }}</td></tr>
+  <tr><th>Días adicionales</th><td>{{ s.dias_adicionales }}</td></tr>
+</table>
+<table>
+  <tr><td>Valor días iniciales</td><td class="num">{{ s.valor_alquiler|moneda }}</td></tr>
+  <tr><td>Valor días adicionales</td><td class="num">{{ s.valor_adicional|moneda }}</td></tr>
+  <tr><td>Descuento días adicionales (2%)</td><td class="num">-{{ s.dto_adicional|moneda }}</td></tr>
+  <tr><td>Descuento establecimiento (5%)</td><td class="num">-{{ s.dto_establecimiento|moneda }}</td></tr>
+  <tr><td>Total descuentos</td><td class="num">-{{ s.total_descuentos|moneda }}</td></tr>
+  <tr><td>Incremento domicilio (5%)</td><td class="num">+{{ s.incremento_domicilio|moneda }}</td></tr>
+  <tr class="total"><td>TOTAL A PAGAR</td><td class="num" id="total">{{ s.total|moneda }}</td></tr>
+</table>
+<div class="no-print">
+  <button onclick="window.print()">Imprimir recibo</button>
+  <a class="btn" href="{{ url_for('index') }}">Nueva liquidación</a>
+</div>
+<!-- Versión texto del recibo (proyecto1.generar_factura) -->
+<pre hidden>{{ texto }}</pre>
+{% endblock %}
