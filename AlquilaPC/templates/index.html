@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Liquidar servicio de alquiler</h1>
+<p>Valor por equipo por día: <strong>$35.000</strong>. Mínimo 2 equipos.</p>
+
+{% if errores %}
+<div class="errores" id="errores">
+  <strong>No se puede liquidar:</strong>
+  <ul>{% for e in errores %}<li>{{ e }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<form method="post" action="{{ url_for('liquidar') }}">
+  <label for="nombre">Nombre del cliente</label>
+  <input id="nombre" name="nombre" value="{{ datos.get('nombre', '') }}">
+
+  <label for="equipos">Número de equipos</label>
+  <input id="equipos" name="equipos" type="number" value="{{ datos.get('equipos', '') }}">
+
+  <label for="dias_iniciales">Días iniciales</label>
+  <input id="dias_iniciales" name="dias_iniciales" type="number" value="{{ datos.get('dias_iniciales', '') }}">
+
+  <label for="dias_adicionales">Días adicionales</label>
+  <input id="dias_adicionales" name="dias_adicionales" type="number" value="{{ datos.get('dias_adicionales', '0') }}">
+
+  <label for="tipo_servicio">Tipo de servicio</label>
+  <select id="tipo_servicio" name="tipo_servicio">
+    <option value="">-- Seleccione --</option>
+    {% for k, v in tipos.items() %}
+    <option value="{{ k }}" {% if datos.get('tipo_servicio') == k|string %}selected{% endif %}>{{ v }}</option>
+    {% endfor %}
+  </select>
+
+  <button type="submit">Liquidar y generar recibo</button>
+</form>
+{% endblock %}

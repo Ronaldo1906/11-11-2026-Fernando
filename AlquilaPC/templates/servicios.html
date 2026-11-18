@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h1>Consultar servicios</h1>
+<form method="get" class="no-print">
+  <label for="nombre">Buscar por nombre del cliente</label>
+  <input id="nombre" name="nombre" value="{{ filtro }}">
+  <button type="submit">Buscar</button>
+</form>
+{% if servicios %}
+<table>
+  <tr><th>#</th><th>Cliente</th><th>Servicio</th><th>Equipos</th><th>Días</th><th class="num">Total</th></tr>
+  {% for s in servicios %}
+  <tr>
+    <td><a href="{{ url_for('ver_servicio', sid=s.id) }}">{{ s.id }}</a></td>
+    <td>{{ s.nombre }}</td>
+    <td>{{ s.tipo_servicio_nombre }}</td>
+    <td>{{ s.equipos }}</td>
+    <td>{{ s.dias_iniciales }} + {{ s.dias_adicionales }}</td>
+    <td class="num">{{ s.total|moneda }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p>No hay servicios liquidados{% if filtro %} para "{{ filtro }}"{% endif %}.</p>
+{% endif %}
+{% endblock %}

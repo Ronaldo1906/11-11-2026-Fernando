@@ -1,0 +1,24 @@
+@startuml actividades_calculo
+start
+:Ingresar nombre, equipos, días iniciales,\ndías adicionales y tipo de servicio;
+if (¿Datos válidos?) then (no)
+  :Mostrar errores;
+  stop
+endif
+:base = equipos x días ini x 35.000;
+:adicional = equipos x días adic x 35.000;
+:subtotal = base + adicional;
+if (¿días adicionales > 0?) then (sí)
+  :dto_adic = 2% de adicional;
+endif
+if (¿tipo = establecimiento?) then (sí)
+  :dto_est = 5% de subtotal;
+endif
+:neto = subtotal - descuentos;
+if (¿tipo = fuera de la ciudad?) then (sí)
+  :incremento = 5% de neto;
+endif
+:total = neto + incremento;
+:Generar recibo;
+stop
+@enduml

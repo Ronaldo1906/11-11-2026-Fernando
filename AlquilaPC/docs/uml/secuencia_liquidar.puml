@@ -1,0 +1,23 @@
+@startuml secuencia_liquidar
+actor Empleado
+participant "app.py\n(Flask)" as W
+participant "proyecto1" as P
+database "SERVICIOS\n(memoria)" as M
+Empleado -> W : POST /liquidar (datos)
+W -> P : calcular_valores(...)
+P -> P : validar_datos(...)
+alt datos inválidos
+  P --> W : ValidacionError(errores)
+  W --> Empleado : 400 + mensajes de error
+else datos válidos
+  P -> P : calculo_alquiler()
+  P -> P : calculo_alquiler_adicional()
+  P -> P : calculo_descuento()
+  note right of P : dto adicional -> dto establecimiento\n-> domicilio -> total
+  P --> W : liquidación (dict)
+  W -> M : guardar_servicio()
+  W --> Empleado : 302 -> /servicios/<id>
+  Empleado -> W : GET /servicios/<id>
+  W --> Empleado : Recibo (imprimible)
+end
+@enduml
